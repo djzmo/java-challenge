@@ -33,9 +33,13 @@ public class EmployeeController {
     }
 
     @GetMapping("/employees/{employeeId}")
-    public ResponseEntity<EmployeeDto> getEmployee(@PathVariable(name = "employeeId") Long employeeId) {
+    public ResponseEntity<SuccessWithDataResponse<EmployeeDto>> getEmployee(@PathVariable(name = "employeeId") Long employeeId) {
         Employee employee = employeeService.getEmployee(employeeId);
-        return new ResponseEntity<>(EmployeeDto.fromJpa(employee), employee != null ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+        boolean success = employee != null;
+        return new ResponseEntity<>(
+                new SuccessWithDataResponse<>(success, EmployeeDto.fromJpa(employee)),
+                success ? HttpStatus.OK : HttpStatus.NOT_FOUND
+        );
     }
 
     @PostMapping("/employees")
