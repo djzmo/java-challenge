@@ -6,7 +6,9 @@ import jp.co.axa.apidemo.entities.Employee;
 import jp.co.axa.apidemo.repositories.EmployeeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,7 +24,7 @@ public class EmployeeServiceImpl implements EmployeeService{
         this.employeeRepository = employeeRepository;
     }
 
-    @Cacheable(value = "employee")
+    @Cacheable(value = "employees")
     public List<Employee> retrieveEmployees() {
         return employeeRepository.findAll();
     }
@@ -33,6 +35,8 @@ public class EmployeeServiceImpl implements EmployeeService{
         return optEmp.orElse(null);
     }
 
+    @Caching(evict = { @CacheEvict(value = "employees", allEntries = true) },
+            put = { @CachePut(value = "employee", key = "#result.id") })
     public Employee saveEmployee(SaveEmployeeRequest request){
         Employee employee = new Employee();
         employee.setName(request.getName());
@@ -41,7 +45,10 @@ public class EmployeeServiceImpl implements EmployeeService{
         return employeeRepository.save(employee);
     }
 
-    @CacheEvict(value = "employee", key = "#id")
+    @Caching(evict = {
+            @CacheEvict(value = "employees", allEntries = true),
+            @CacheEvict(value = "employee", key = "#id")
+    })
     public boolean deleteEmployee(Long id){
         Employee existingData = getEmployee(id);
         if (existingData != null) {
@@ -52,10 +59,14 @@ public class EmployeeServiceImpl implements EmployeeService{
         return existingData != null;
     }
 
-    @CacheEvict(value = "employee", key = "#id")
+    @Caching(evict = {
+            @CacheEvict(value = "employees", allEntries = true),
+            @CacheEvict(value = "employee", key = "#id")
+    })
     public Employee updateEmployee(Long id, UpdateEmployeeRequest request) {
         Employee existingData = getEmployee(id);
         if (existingData != null) {
+            // Allow partial update
             if (request.getName() != null) {
                 existingData.setName(request.getName());
             }
