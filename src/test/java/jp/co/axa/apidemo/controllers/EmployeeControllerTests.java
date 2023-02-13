@@ -61,10 +61,11 @@ public class EmployeeControllerTests {
         mockMvc.perform(get("/api/v1/employees/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.name", is("John Doe")))
-                .andExpect(jsonPath("$.salary", is(10000)))
-                .andExpect(jsonPath("$.department", is("CEO")));
+                .andExpect(jsonPath("$.success", is(true)))
+                .andExpect(jsonPath("$.data.id", is(1)))
+                .andExpect(jsonPath("$.data.name", is("John Doe")))
+                .andExpect(jsonPath("$.data.salary", is(10000)))
+                .andExpect(jsonPath("$.data.department", is("CEO")));
     }
 
     @Test
