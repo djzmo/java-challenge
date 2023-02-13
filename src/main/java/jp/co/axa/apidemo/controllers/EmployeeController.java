@@ -59,6 +59,9 @@ public class EmployeeController {
                                                                                @PathVariable(name = "employeeId") Long employeeId) {
         Employee updated = employeeService.updateEmployee(employeeId, request);
         boolean success = updated != null;
-        return new ResponseEntity<>(new SuccessWithDataResponse<>(success, EmployeeDto.fromJpa(updated)), success ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(
+                new SuccessWithDataResponse<>(success, EmployeeDto.fromJpa(updated)),
+                success ? HttpStatus.OK : HttpStatus.NOT_FOUND
+        );
     }
 }
