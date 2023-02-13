@@ -56,9 +56,15 @@ public class EmployeeServiceImpl implements EmployeeService{
     public Employee updateEmployee(Long id, UpdateEmployeeRequest request) {
         Employee existingData = getEmployee(id);
         if (existingData != null) {
-            existingData.setName(request.getName());
-            existingData.setSalary(request.getSalary());
-            existingData.setDepartment(request.getDepartment());
+            if (request.getName() != null) {
+                existingData.setName(request.getName());
+            }
+            if (request.getSalary() != null) {
+                existingData.setSalary(request.getSalary());
+            }
+            if (request.getDepartment() != null) {
+                existingData.setDepartment(request.getDepartment());
+            }
             employeeRepository.save(existingData);
         } else {
             log.warn("Tried to update non-existent Employee with id {}", id);

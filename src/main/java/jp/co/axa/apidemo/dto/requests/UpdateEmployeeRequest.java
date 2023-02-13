@@ -10,7 +10,6 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @Data
 public class UpdateEmployeeRequest {
-    @NotBlank
     private String name;
     private Integer salary;
     private String department;

@@ -6,6 +6,7 @@ import jp.co.axa.apidemo.entities.Employee;
 import jp.co.axa.apidemo.repositories.EmployeeRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -17,6 +18,7 @@ import java.util.Optional;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
@@ -111,5 +113,26 @@ public class EmployeeServiceImplTest {
         assertEquals("John Doe", result.getName());
         assertEquals(1000, result.getSalary().intValue());
         assertEquals("CEO", result.getDepartment());
+    }
+
+    @Test
+    public void testUpdateEmployeeWithPartialData() {
+        // Given
+        UpdateEmployeeRequest request = new UpdateEmployeeRequest("David Smith", null, "CTO");
+        Employee employee = new Employee(1L, "John Doe", 1000, "CEO");
+        when(employeeRepository.findById(1L)).thenReturn(Optional.of(employee));
+        when(employeeRepository.save(any())).thenReturn(employee);
+
+        // Do
+        employeeService.updateEmployee(1L, request);
+
+        // Verify
+        ArgumentCaptor<Employee> captor = ArgumentCaptor.forClass(Employee.class);
+        verify(employeeRepository).save(captor.capture());
+        Employee result = captor.getValue();
+        assertEquals(1L, result.getId().longValue());
+        assertEquals("David Smith", result.getName());
+        assertEquals(1000, result.getSalary().intValue()); // Ensure salary is unchanged
+        assertEquals("CTO", result.getDepartment());
     }
 }
