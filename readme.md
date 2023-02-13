@@ -1,52 +1,30 @@
-### How to use this spring-boot project
+## How to use this spring-boot project
 
 - Install packages with `mvn package`
 - Run `mvn spring-boot:run` for starting the application (or use your IDE)
 
-Application (with the embedded H2 database) is ready to be used ! You can access the url below for testing it :
+Application (with the embedded H2 database) is ready to be used! You can access the url below for testing it :
 
-- Swagger UI : http://localhost:8080/swagger-ui.html
-- H2 UI : http://localhost:8080/h2-console
+- Swagger UI: http://localhost:8080/swagger-ui.html
+- H2 UI: http://localhost:8080/h2-console
 
 > Don't forget to set the `JDBC URL` value as `jdbc:h2:mem:testdb` for H2 UI.
 
+## What I did
 
+1. Unified `EmployeeController` endpoints with standard JSON responses and clearer request data structure
+2. Separated DTOs (used in controllers) from JPA entities to avoid exposing internal data structures
+3. Added `CommonExceptionHandler` for standardized error responses and logging
+4. Added Caffeine caching for `EmployeeService`
+5. Added basic authentication for all REST endpoints (set username and password in `application.properties`)
+6. Fixed Swagger to show only endpoints from the application REST controllers (see `SwaggerConfiguration`)
+7. Upgraded to the latest Spring Boot 2 version (2.7.8 as of writing this)
+8. Added tests for `EmployeeService` and `EmployeeController`
 
-### Instructions
+## My experience with Java
 
-- download the zip file of this project
-- create a repository in your own github named 'java-challenge'
-- clone your repository in a folder on your machine
-- extract the zip file in this folder
-- commit and push
-
-- Enhance the code in any ways you can see, you are free! Some possibilities:
-  - Add tests
-  - Change syntax
-  - Protect controller end points
-  - Add caching logic for database calls
-  - Improve doc and comments
-  - Fix any bug you might find
-- Edit readme.md and add any comments. It can be about what you did, what you would have done if you had more time, etc.
-- Send us the link of your repository.
-
-#### Restrictions
-- use java 8
-
-
-#### What we will look for
-- Readability of your code
-- Documentation
-- Comments in your code 
-- Appropriate usage of spring boot
-- Appropriate usage of packages
-- Is the application running as expected
-- No performance issues
-
-#### Your experience in Java
-
-Please let us know more about your Java experience in a few sentences. For example:
-
-- I have 3 years experience in Java and I started to use Spring Boot from last year
-- I'm a beginner and just recently learned Spring Boot
-- I know Spring Boot very well and have been using it for many years
+- I have been using Java occasionally since college (2011~) for studying
+- I have been using Java 8 and 11 professionally since 2019 and started using Kotlin as well since 2020 with both Maven and Gradle
+- I started using Spring Boot since 2021 have always been using it since then with Java and Kotlin
+- I have used Spring Boot for creating public REST APIs and private microservices
+- I can navigate through most Spring Boot projects, but always consults the documentation and look for best practices before making any contributions
